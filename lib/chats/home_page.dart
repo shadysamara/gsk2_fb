@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsg2_firebase/Auth/helpers/firestore_helper.dart';
 
 class HomePage extends StatelessWidget {
   static final routeName = 'home';
@@ -7,7 +8,9 @@ class HomePage extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       body: Center(
-        child: Text('Home Page'),
+        child: RaisedButton(onPressed: () {
+          FirestoreHelper.firestoreHelper.getAllUsersFromFirestore();
+        }),
       ),
     );
   }

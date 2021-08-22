@@ -12,12 +12,18 @@ class RegisterPage extends StatelessWidget {
     // TODO: implement build
     return Consumer<AuthProvider>(
       builder: (context, provider, x) {
-        return Column(
-          children: [
-            CustomTextfield('Email', provider.emailController),
-            CustomTextfield('Password', provider.passwordController),
-            CustomButton(provider.register, 'Register'),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomTextfield('FirstName', provider.firstNameController),
+              CustomTextfield('LastName', provider.lastNameController),
+              CustomTextfield('Country', provider.countryController),
+              CustomTextfield('City', provider.cituController),
+              CustomTextfield('Email', provider.emailController),
+              CustomTextfield('Password', provider.passwordController),
+              CustomButton(provider.register, 'Register'),
+            ],
+          ),
         );
       },
     );
