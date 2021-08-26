@@ -5,6 +5,7 @@ import 'package:gsg2_firebase/Auth/ui/register_page.dart';
 import 'package:provider/provider.dart';
 
 class AuthMainPage extends StatefulWidget {
+  static final String routeName = 'authPage';
   @override
   _AuthMainPageState createState() => _AuthMainPageState();
 }

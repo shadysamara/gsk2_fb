@@ -6,7 +6,10 @@ import 'package:gsg2_firebase/Auth/ui/login_page.dart';
 import 'package:gsg2_firebase/Auth/ui/register_page.dart';
 import 'package:gsg2_firebase/Auth/ui/reset_password_page.dart';
 import 'package:gsg2_firebase/chats/home_page.dart';
+import 'package:gsg2_firebase/chats/profile_page.dart';
+import 'package:gsg2_firebase/chats/users_page.dart';
 import 'package:gsg2_firebase/services/routes_helper.dart';
+import 'package:gsg2_firebase/splach_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,6 +21,9 @@ void main() {
             RegisterPage.routeName: (context) => RegisterPage(),
             ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
             HomePage.routeName: (context) => HomePage(),
+            AuthMainPage.routeName: (context) => AuthMainPage(),
+            UsersPage.routeName: (context) => UsersPage(),
+            ProfilePage.routeName: (context) => ProfilePage(),
           },
           navigatorKey: RouteHelper.routeHelper.navKey,
           home: FirebaseConfiguration())));
@@ -39,7 +45,7 @@ class FirebaseConfiguration extends StatelessWidget {
             );
           }
           if (dataSnapShot.connectionState == ConnectionState.done) {
-            return AuthMainPage();
+            return SplachScreen();
           }
           return Scaffold(
             body: Center(
