@@ -11,12 +11,15 @@ import 'package:gsg2_firebase/Auth/models/register_request.dart';
 import 'package:gsg2_firebase/Auth/models/user_model.dart';
 import 'package:gsg2_firebase/Auth/ui/auth_main_page.dart';
 import 'package:gsg2_firebase/Auth/ui/login_page.dart';
+import 'package:gsg2_firebase/chats/chat_page.dart';
 import 'package:gsg2_firebase/chats/home_page.dart';
 import 'package:gsg2_firebase/services/custom_dialoug.dart';
 import 'package:gsg2_firebase/services/routes_helper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthProvider extends ChangeNotifier {
+  List<UserModel> users;
+  String myId;
   AuthProvider() {
     getCountriesFromFirestore();
   }
@@ -27,6 +30,12 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController cituController = TextEditingController();
+
+  getAllUsers() async {
+    users = await FirestoreHelper.firestoreHelper.getAllUsersFromFirestore();
+    users.removeWhere((element) => element.id == myId);
+    notifyListeners();
+  }
 
   UserModel user;
   getUserFromFirestore() async {
@@ -135,9 +144,11 @@ class AuthProvider extends ChangeNotifier {
 
   checkLogin() {
     bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
-    print(FirebaseAuth.instance.currentUser);
+
     if (isLoggedIn) {
-      RouteHelper.routeHelper.goToPageWithReplacement(HomePage.routeName);
+      this.myId = AuthHelper.authHelper.getUserId();
+      getAllUsers();
+      RouteHelper.routeHelper.goToPageWithReplacement(ChatPage.routeName);
     } else {
       RouteHelper.routeHelper.goToPageWithReplacement(AuthMainPage.routeName);
     }
@@ -164,20 +175,13 @@ class AuthProvider extends ChangeNotifier {
       imageUrl = await FirebaseStorageHelper.firebaseStorageHelper
           .uploadImage(updatedFile);
     }
-    UserModel userModel = imageUrl == null
-        ? UserModel(
-            city: cituController.text,
-            country: countryController.text,
-            fName: firstNameController.text,
-            lName: lastNameController.text,
-            id: user.id)
-        : UserModel(
-            city: cituController.text,
-            country: countryController.text,
-            fName: firstNameController.text,
-            lName: lastNameController.text,
-            id: user.id,
-            imageUrl: imageUrl);
+    UserModel userModel = UserModel(
+        city: cituController.text,
+        country: countryController.text,
+        fName: firstNameController.text,
+        lName: lastNameController.text,
+        id: user.id,
+        imageUrl: imageUrl ?? user.imageUrl);
 
     await FirestoreHelper.firestoreHelper.updateProfile(userModel);
     getUserFromFirestore();

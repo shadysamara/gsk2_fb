@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gsg2_firebase/Auth/helpers/auth_helper.dart';
 import 'package:gsg2_firebase/Auth/models/country_model.dart';
 import 'package:gsg2_firebase/Auth/models/register_request.dart';
 import 'package:gsg2_firebase/Auth/models/user_model.dart';
@@ -8,6 +9,16 @@ class FirestoreHelper {
   FirestoreHelper._();
   static FirestoreHelper firestoreHelper = FirestoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream() {
+    return firebaseFirestore.collection('Chats').snapshots();
+  }
+
+  addMessageToFirestore(Map map) async {
+    firebaseFirestore
+        .collection('Chats')
+        .add({...map, 'userId': AuthHelper.authHelper.getUserId()});
+  }
+
   addUserToFirestore(RegisterRequest registerRequest) async {
     try {
       // await firebaseFirestore.collection('Users').add(registerRequest.toMap());
