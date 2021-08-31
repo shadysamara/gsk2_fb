@@ -10,7 +10,10 @@ class FirestoreHelper {
   static FirestoreHelper firestoreHelper = FirestoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream() {
-    return firebaseFirestore.collection('Chats').snapshots();
+    return firebaseFirestore
+        .collection('Chats')
+        .orderBy('dateTime')
+        .snapshots();
   }
 
   addMessageToFirestore(Map map) async {
